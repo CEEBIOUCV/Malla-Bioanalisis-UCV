@@ -26,20 +26,31 @@
       border-radius: 0;
       box-shadow: none;
     }
+    /* Párrafo informativo al inicio: ocupa columnas 1 a 5 y justificado */
     .info-uso {
       background: #f4ba04;
       color: #153054;
       font-family: 'Segoe UI', Arial, sans-serif;
       font-size: 1.13em;
-      max-width: 750px;
+      max-width: 1400px; /* para coincidir con el ancho máximo */
       margin: 18px auto 35px auto;
       padding: 16px 18px 15px 18px;
       border-radius: 12px;
       box-shadow: 0 2px 18px #f4ba0444;
       line-height: 1.6;
-      text-align: center;
+      text-align: justify; /* Justificado */
       font-weight: 500;
       letter-spacing: 0.01em;
+
+      display: block;
+      grid-column: 1 / 6; /* ocupa columnas 1 a 5 */
+    }
+    /* "¿Cómo usarla?" solo en negrita, centrado y con margen inferior */
+    .info-uso strong {
+      display: block;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
     .malla-grid {
       display: grid;
@@ -308,7 +319,7 @@
     />
   </header>
   <div class="info-uso">
-    ¿Cómo usarla?<br>
+    <strong>¿Cómo usarla?</strong>
     Haz click o presiona las materias que has aprobado, a medida que vas marcando, te muestra las materias que puedes ver el siguiente semestre. También te muestra las materias que no puedes ver, y los requisitos que debes cumplir para cursarlas.
   </div>
   <div class="malla-grid" id="malla-contenedor"></div>
@@ -319,7 +330,7 @@
     • Para cursar el <b class="ir">Internado Rotatorio</b>, deben aprobarse 18 unidades de crédito de materias electivas, y haberse realizado el servicio comunitario.
   </div>
   <div class="logos-ucv" aria-label="Logo CEEBIO y derechos de autor">
-    <img src="CEEBIO.jpg" alt="Logo CEEBIO" class="logo-ceebio" />
+    <img src="CEEBIO.PNG" alt="Logo CEEBIO" class="logo-ceebio" />
     <div class="copyright"><b>© 2025 por Clareth Dagfeel Sec. Asuntos Académicos.</b></div>
   </div>
   <a class="btn-regresa" href="https://ceebioucv.wixsite.com/ceebio/planillas-control-de-estudio" target="_blank" rel="noopener">
@@ -519,4 +530,3 @@
   </script>
 </body>
 </html>
-
