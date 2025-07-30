@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -25,6 +25,22 @@
       display: block;
       border-radius: 0;
       box-shadow: none;
+    }
+    /* Párrafo informativo al inicio */
+    .info-uso {
+      background: #f4ba04;
+      color: #153054;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 1.14em;
+      max-width: 750px;
+      margin: 16px auto 36px auto;
+      padding: 17px 19px;
+      border-radius: 11px;
+      box-shadow: 0 2px 18px #f4ba0446;
+      line-height: 1.58;
+      text-align: center;
+      font-weight: 500;
+      letter-spacing: 0.01em;
     }
     .malla-grid {
       display: grid;
@@ -205,12 +221,38 @@
     .copyright {
       font-size: 0.88em;
       color: #566074;
-      font-weight: 700; /* Negrita */
+      font-weight: 700;
       letter-spacing: 0.02em;
       text-align: center;
       margin-top: 6px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       user-select: none;
+    }
+    /* BOTÓN personalizado */
+    .btn-regresa {
+      margin: 33px auto 0 auto;
+      display: block;
+      background: linear-gradient(90deg,#153054 58%, #f4ba04 130%);
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.019em;
+      font-size: 1.08em;
+      padding: 13px 34px;
+      border: none;
+      border-radius: 7px;
+      box-shadow: 0 1.5px 24px #15305422, 0 1.5px 6px #f4ba0433;
+      cursor: pointer;
+      transition: background 0.17s, color 0.17s, transform 0.11s;
+      outline: none;
+      text-decoration: none;
+      text-align: center;
+    }
+    .btn-regresa:hover, .btn-regresa:focus {
+      background: linear-gradient(90deg,#f4ba04 60%, #153054 180%);
+      color: #153054;
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 24px #f4ba0444, 0 2px 8px #15305433;
     }
     @media (max-width:1200px) {
       .malla-grid {
@@ -247,29 +289,40 @@
       .leyenda {
         padding: 8px 4vw;
       }
+      .info-uso {
+        padding: 10px 4vw;
+      }
+      .btn-regresa {
+        width: 95vw;
+        font-size: 1em;
+        padding: 12px 2vw;
+      }
     }
-  </style>
-</head>
-<body>
-  <header>
-    <img
-      src="titulo-bioanalisis.png.jpg"
-      alt="Título: Malla Curricular Licenciatura en Bioanálisis UCV"
-      class="titulo-img"
-    />
-  </header>
-  <div class="malla-grid" id="malla-contenedor"></div>
-  <div class="leyenda">
-    <strong>Información adicional:</strong><br />
-    • Para cursar <b>Deontología y Legislación</b>, deben aprobarse 45 créditos obligatorios.<br />
-    • Para cursar <b>Administración Sanitaria</b>, deben aprobarse 40 créditos obligatorios.<br />
-    • Para cursar el <b class="ir">Internado Rotatorio</b>, deben aprobarse 18 unidades de crédito de materias electivas, y haberse realizado el servicio comunitario.
-  </div>
-  <div class="logos-ucv" aria-label="Logo CEEBIO y derechos de autor">
-    <img src="CEEBIO.PNG" alt="Logo CEEBIO" class="logo-ceebio" />
-    <div class="copyright">© 2025 por Clareth Dagfeel Sec. Asuntos Académicos.</div>
-  </div>
-  <script>
+  
+
+
+  
+    
+  
+  
+    ¿Cómo usarla?
+    Haz click o presiona las materias que has aprobado, a medida que vas marcando, te muestra las materias que puedes ver el siguiente semestre. También te muestra las materias que no puedes ver, y los requisitos que debes cumplir para cursarlas.
+  
+  
+  
+    Información adicional:
+    • Para cursar Deontología y Legislación, deben tenerse aprobados 45 créditos obligatorios.
+    • Para cursar Administración Sanitaria, deben aprobarse 40 créditos obligatorios.
+    • Para cursar el Internado Rotatorio, deben aprobarse 18 unidades de crédito de materias electivas, y haberse realizado el servicio comunitario.
+  
+  
+    
+    © 2025 por Clareth Dagfeel Sec. Asuntos Académicos.
+  
+  
+    Regresa a nuestra página
+  
+  
     const malla = [
       { nombre: "PRIMER SEMESTRE", materias: [
           { nombre: "Matemática I", uc: 3, codigo: "mat1" },
@@ -359,14 +412,7 @@
           ok:false, 
           faltan: mat.reqs.filter(req=>!aprobadas.includes(req)) 
         };
-      if (mat.reqUC && totalUC(aprobadas)<mat.reqUC)
-        return {
-          ok:false,
-          faltanUC: mat.reqUC - totalUC(aprobadas)
-        };
-      if (mat.reqAllPrev) {
-        let prevMat = [];
-        for(let i=0;i<8;i++) malla[i].materias.forEach(m=>prevMat.push(m.codigo));
+      if (mat.reqUC && totalUC(aprobadas)prevMat.push(m.codigo));
         if (!prevMat.every(c=>aprobadas.includes(c)))
           return { ok:false, faltanMat: prevMat.filter(c=>!aprobadas.includes(c)) }
       }
@@ -387,28 +433,7 @@
       contenedor.innerHTML = "";
 
       // Primera fila: semestres 1-5
-      for (let i=0;i<5;i++) {
-        const semDiv = crearSemestreDiv(malla[i], aprobadas);
-        contenedor.appendChild(semDiv);
-      }
-      // Segunda fila: semestres 6-10
-      for (let i=5;i<10;i++) {
-        const semDiv = crearSemestreDiv(malla[i], aprobadas);
-        contenedor.appendChild(semDiv);
-      }
-    }
-
-    function crearSemestreDiv(sem, aprobadas) {
-      const semDiv = document.createElement("div");
-      semDiv.className = "semestre";
-      const titulo = document.createElement("h2");
-      titulo.textContent = sem.nombre;
-      semDiv.appendChild(titulo);
-
-      const ul = document.createElement("ul");
-      ul.className = "materias";
-
-      sem.materias.forEach((mat) => {
+      for (let i=0;i {
         const estadoReq = checkReqs(mat, aprobadas);
 
         const li = document.createElement("li");
@@ -434,9 +459,9 @@
           li.classList.add("aprobada");
         }
         li.innerHTML = `
-          <span class="nombre">${mat.nombre}</span>
-          <span class="uc">${mat.uc} UC</span>
-          <span class="check">✔</span>
+          ${mat.nombre}
+          ${mat.uc} UC
+          ✔
         `;
         if (!aprobadas.includes(mat.codigo) && !li.classList.contains("bloqueada")) {
           li.addEventListener("click", function (e) {
@@ -460,6 +485,3 @@
     }
 
     window.addEventListener("DOMContentLoaded", renderMalla);
-  </script>
-</body>
-</html>
