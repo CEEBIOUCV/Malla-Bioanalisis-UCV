@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -26,18 +26,17 @@
       border-radius: 0;
       box-shadow: none;
     }
-    /* Párrafo informativo al inicio */
     .info-uso {
       background: #f4ba04;
       color: #153054;
       font-family: 'Segoe UI', Arial, sans-serif;
-      font-size: 1.14em;
+      font-size: 1.13em;
       max-width: 750px;
-      margin: 16px auto 36px auto;
-      padding: 17px 19px;
-      border-radius: 11px;
-      box-shadow: 0 2px 18px #f4ba0446;
-      line-height: 1.58;
+      margin: 18px auto 35px auto;
+      padding: 16px 18px 15px 18px;
+      border-radius: 12px;
+      box-shadow: 0 2px 18px #f4ba0444;
+      line-height: 1.6;
       text-align: center;
       font-weight: 500;
       letter-spacing: 0.01em;
@@ -298,31 +297,35 @@
         padding: 12px 2vw;
       }
     }
-  
-
-
-  
-    
-  
-  
-    ¿Cómo usarla?
+  </style>
+</head>
+<body>
+  <header>
+    <img
+      src="titulo-bioanalisis.png.jpg"
+      alt="Título: Malla Curricular Licenciatura en Bioanálisis UCV"
+      class="titulo-img"
+    />
+  </header>
+  <div class="info-uso">
+    ¿Cómo usarla?<br>
     Haz click o presiona las materias que has aprobado, a medida que vas marcando, te muestra las materias que puedes ver el siguiente semestre. También te muestra las materias que no puedes ver, y los requisitos que debes cumplir para cursarlas.
-  
-  
-  
-    Información adicional:
-    • Para cursar Deontología y Legislación, deben tenerse aprobados 45 créditos obligatorios.
-    • Para cursar Administración Sanitaria, deben aprobarse 40 créditos obligatorios.
-    • Para cursar el Internado Rotatorio, deben aprobarse 18 unidades de crédito de materias electivas, y haberse realizado el servicio comunitario.
-  
-  
-    
-    © 2025 por Clareth Dagfeel Sec. Asuntos Académicos.
-  
-  
+  </div>
+  <div class="malla-grid" id="malla-contenedor"></div>
+  <div class="leyenda">
+    <strong>Información adicional:</strong><br />
+    • Para cursar <b>Deontología y Legislación</b>, deben tenerse aprobados 45 créditos obligatorios.<br />
+    • Para cursar <b>Administración Sanitaria</b>, deben aprobarse 40 créditos obligatorios.<br />
+    • Para cursar el <b class="ir">Internado Rotatorio</b>, deben aprobarse 18 unidades de crédito de materias electivas, y haberse realizado el servicio comunitario.
+  </div>
+  <div class="logos-ucv" aria-label="Logo CEEBIO y derechos de autor">
+    <img src="CEEBIO.jpg" alt="Logo CEEBIO" class="logo-ceebio" />
+    <div class="copyright"><b>© 2025 por Clareth Dagfeel Sec. Asuntos Académicos.</b></div>
+  </div>
+  <a class="btn-regresa" href="https://ceebioucv.wixsite.com/ceebio/planillas-control-de-estudio" target="_blank" rel="noopener">
     Regresa a nuestra página
-  
-  
+  </a>
+  <script>
     const malla = [
       { nombre: "PRIMER SEMESTRE", materias: [
           { nombre: "Matemática I", uc: 3, codigo: "mat1" },
@@ -412,7 +415,14 @@
           ok:false, 
           faltan: mat.reqs.filter(req=>!aprobadas.includes(req)) 
         };
-      if (mat.reqUC && totalUC(aprobadas)prevMat.push(m.codigo));
+      if (mat.reqUC && totalUC(aprobadas)<mat.reqUC)
+        return {
+          ok:false,
+          faltanUC: mat.reqUC - totalUC(aprobadas)
+        };
+      if (mat.reqAllPrev) {
+        let prevMat = [];
+        for(let i=0;i<8;i++) malla[i].materias.forEach(m=>prevMat.push(m.codigo));
         if (!prevMat.every(c=>aprobadas.includes(c)))
           return { ok:false, faltanMat: prevMat.filter(c=>!aprobadas.includes(c)) }
       }
@@ -433,7 +443,28 @@
       contenedor.innerHTML = "";
 
       // Primera fila: semestres 1-5
-      for (let i=0;i {
+      for (let i=0;i<5;i++) {
+        const semDiv = crearSemestreDiv(malla[i], aprobadas);
+        contenedor.appendChild(semDiv);
+      }
+      // Segunda fila: semestres 6-10
+      for (let i=5;i<10;i++) {
+        const semDiv = crearSemestreDiv(malla[i], aprobadas);
+        contenedor.appendChild(semDiv);
+      }
+    }
+
+    function crearSemestreDiv(sem, aprobadas) {
+      const semDiv = document.createElement("div");
+      semDiv.className = "semestre";
+      const titulo = document.createElement("h2");
+      titulo.textContent = sem.nombre;
+      semDiv.appendChild(titulo);
+
+      const ul = document.createElement("ul");
+      ul.className = "materias";
+
+      sem.materias.forEach((mat) => {
         const estadoReq = checkReqs(mat, aprobadas);
 
         const li = document.createElement("li");
@@ -459,9 +490,9 @@
           li.classList.add("aprobada");
         }
         li.innerHTML = `
-          ${mat.nombre}
-          ${mat.uc} UC
-          ✔
+          <span class="nombre">${mat.nombre}</span>
+          <span class="uc">${mat.uc} UC</span>
+          <span class="check">✔</span>
         `;
         if (!aprobadas.includes(mat.codigo) && !li.classList.contains("bloqueada")) {
           li.addEventListener("click", function (e) {
@@ -485,3 +516,7 @@
     }
 
     window.addEventListener("DOMContentLoaded", renderMalla);
+  </script>
+</body>
+</html>
+
